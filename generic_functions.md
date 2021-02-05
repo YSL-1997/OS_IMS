@@ -5,6 +5,7 @@ Generics are syntax components of a programming language that can be **reused** 
 ## References
 https://levelup.gitconnected.com/using-templates-and-generics-in-c-968da223154d
 http://cs.boisestate.edu/~amit/teaching/253/handouts/07-c-generic-coding-handout.pdf
+
 https://stackoverflow.com/questions/13469381/how-to-make-generic-function-using-void-in-c
 
 ## Motivating Question
