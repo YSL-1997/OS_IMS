@@ -45,6 +45,43 @@ Two approaches - software approach; hardware approach.
 	+ software approach - the page tables are maintained by the software - hypervisor
 	+ hardware approach - the page tables are maintained by the virtual machine itself.
 
+## Memory Reclaimation
+Several terms:
+
++ Overcommitment
+	+ Example: 32 GB of physical memory on host, 3 VMs with each having 16 GB (48 in total)
++ Deduplication
+	+ solution to overcommitment
+	+ optimization technique
+	+ detail: share the pages that have the same content in different VMs
++ Ballooning
+	+ Use case: shift some of the pages acquired by VM1 to VM2
+		+ the pages shifted are NOT important to VM1
+		+ managed by hypervisor
+	+ Problem: how could hypervisor know which pages are NOT important to VM1?
+	+ Solution: Ballooning
+	+ Details:
+		+ Use a balloon module that attached to each VM (one balloon per VM)
+		+ For any VM, if more pages are assigned to it, then its balloon will inflate (充气，膨胀)
+		+ ...............less pages...........................................deflate
+	+ Does the hypervisor decide which page is NOT important?
+		+ No. It is the VM (Guest OS) itself to decide which pages are NOT important - it will deallocate such pages, wuch deallocated pages will be shifted by the hypervisor to another VM.
+
+## I/O Virtualization
+#### How it works
+
+#### IOMMU
+
+#### Device Domains
+
+#### Single Root I/O Virtualization
+
+
+
+
+
+
+
 ## Outline
 
 + Direct I/O
