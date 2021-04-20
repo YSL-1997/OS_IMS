@@ -3,7 +3,10 @@
 2. Do I need to learn PCI?
 3. While reading the paper, I noticed tons of problems regarding to Direct I/O, and memory virtualization
 4. What's the difference between shadow paging and nested page tables?
-
+5. I noticed several DMA optimization on network device drivers, are we going to do that?
+6. How is IOMMU implemented?
+7. Are we going to implement/modify the IOMMU?
+8. Why are we going to look at the 3c59x.c the device driver for a network card?
 ## Useful links:
 + [Lecture of Virtual Machines by UCSD](http://www.cs.cmu.edu/~dga/15-440/F10/lectures/vm-ucsd.pdf)
 + [CSE 291 Virtualization @UCSD](https://cseweb.ucsd.edu/~yiying/cse291j-winter20/reading/)
@@ -116,7 +119,7 @@ All Guest OSs can direct their I/O calls (by sending requests) to that VM (to th
 #### Single Root I/O Virtualization
 Virtualize a single device to trick every VM into believing that it has exclusive access to its own device.
 
-Instead of creating multiple copies of the hardware of the host OS, it creates multiple copies of I/O devices. It could then allocate such copies of I/O devices to different VMs
+Instead of creating multiple copies of the hardware of the host OS, it creates multiple virtual copies of I/O devices. It could then allocate such copies of I/O devices to different VMs, and those VMs believe that they have exclusive access to its own device.
 
 
 
