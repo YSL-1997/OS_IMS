@@ -68,9 +68,35 @@ Several terms:
 		+ No. It is the VM (Guest OS) itself to decide which pages are NOT important - it will deallocate such pages, wuch deallocated pages will be shifted by the hypervisor to another VM.
 
 ## I/O Virtualization
+
 #### How it works
+1. After installation of the Guest OS, it will probe for all the available I/O devices.
+2. The probing will **trap the hypervisor**, then hypervisor will report back all the available I/O devices (also in disk spaces).
+3. The Guest OS will load device drivers and try to use such available I/O devices.
+
++ Before the problem, we need to know something more:
+	+ In the computer, the hard disk is divided into different partitions, and there is a partition for I/O devices. 
+
++ Problem:
+	+ After hypervisor reports all available disk partition of I/O devices, the Guest OS thinks it owns the entire partition. But in reality, there might be more VMs sharing such partition.
+
++ Solution:
+	+ The hypervisor creates one **file** on the disk partition for each VM, and makes such VM believe that the entire partition is owned by itself (the VM).
+	+ It is the job of the hypervisor to translate the commands from the Guest OS s.t. they are suitable for running on the actual disk partition.
+
+#### DMA
+It is like a co-processor that performs the input/output on behalf of a processor. So the processor won't need to intervene to perform I/O for the computer.
+
+Whenever a processor wants to do some I/O, it passes the physical address to DMA, and then DMA goes to the physical address space to fetch the data and sends it back to some input or output device.
+
++ Problem: 
+	+ Multiple VMs, but only one DMA. DMA deals with the **actual** physical address, but each VM has its own **virtual** physical addresses.
+	+ We need a mapping between actual PA of DMA and virtual PA of VM.
++ Solution:
+	+ IOMMU
 
 #### IOMMU
+I/O MMU uses page tables to map memory addresses that a device wants to use with physical addresses that DMA uses.
 
 #### Device Domains
 
