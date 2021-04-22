@@ -127,7 +127,7 @@ Instead of creating multiple copies of the hardware of the host OS, it creates m
 	+ when guest device driver provides DMA buffers to VF, it can only provide guest physical address of the buffer
 	+ NIC cannot access the DMA buffer memory using guest physical address alone
 + Solution:
-	+ IOMMU - Guest PA -> Host PA.
+	+ IOMMU - Guest PA -> Host PA; without needing to go to the host OS stack.
 
 
 
@@ -161,34 +161,32 @@ cooperative tracking is enabled alongside.
 
 ## Introduction
 #### Direct I/O 
-
 + the best performance [**I/O virtualization**](https://gcallah.github.io/OperatingSystems/VirtualIO.html) method
 + cornerstone capability in data centers and clouds
-+ user could directly interact with I/O devices without the intervention from software intermediary.
++ guest could directly interact with I/O devices without the intervention from software intermediary.
 + **Problem**: requires hypervisor to statically pin the entire guest memory
 + **Effect**: hinders efficiency of memory management
 + **Solution**: virtual IOMMU
 
-#### IOMMU
-
+#### [IOMMU](https://terenceli.github.io/%E6%8A%80%E6%9C%AF/2019/08/04/iommu-introduction)
 + prevents DMA attacks in Direct I/O by providing the **DMA remapping**.
+	+ DMA-remapping translates the address of the incoming DMA request to the correct physical memory address and perform checks for permissions to access that physical address, based on the information provided by the system software.
 + Each assigned device is associated with an IOMMU page table (IOPT), configured by the hypervisor in a way that **only the memory of the guest that owns the device is mapped**.
 + IOMMU walks the IOPTs to validate and translate DMA requests
 	+ achieving inter-guest protection among directly assigned devices.
-
-However, most devices do not tolerate DMA faults - guest buffers must be pinned (kind of like but not exactly the same as mapped) in host memory and mapped in IOMMU page table before we perform DMAs. 
++ **Limitation:** Most devices do not tolerate DMA faults - guest buffers must be pinned in host memory and mapped in IOPT before they are accessed by DMAs. 
 
 #### Problem with IOMMU
+But, the hypervisor does not know which pages are mapped by the guest when it is eliminated from the direct I/O path. Hence, it has to pin the entire guest memory upfront, i.e. a static pinning, which is **coarse-grained pinning**.
+- **Problem:** This heavily hinders the efficiency of memory management and worsens memory utilization.
+- **Reason:** Because pinned pages cannot be reclaimed for other purposes.
+- **Solution:** vIOMMU
 
-But, the hypervisor does not know which pages are mapped by the guest when it is eliminated from the direct I/O path. Hence, it has to pin the entire guest memory upfront, i.e. a static pinning.
-- This heavily hinders the efficiency of memory management and worsens memory utilization, why? 
-- Because pinned pages cannot be reclaimed for other purposes.
-
-#### Virtual IOMMU
-
+#### Virtual IOMMU (slow, but secure)
 + providing vIOMMU to the guest 
-	+ primary purpose: help the guest protect itself against buggy drivers
 	+ allows fine-grained pinning of guest memory for efficient memory management
+	+ primary purpose: help the guest protect itself against buggy drivers
+
 + Remember IOMMU provides **DMA remapping** to prevent DMA attacks?
 	+ The hypervisor emulates the DMA remapping interface by:
 		+ i) walking the virtual IO page table => identify the affected buffers
@@ -199,7 +197,7 @@ But, the hypervisor does not know which pages are mapped by the guest when it is
 #### Problem with vIOMMU
 It is not a reliable solution for fine-grained pinning, only used in limited circumstances.
 + Virtual DMA remapping are disabled by most guests in public cloud.
-+ Because significant emulation cost may be incurred due to **frequent mapping operations in the guest**. Such cost could be **alleviated** through side-core emulation, or para-virtualized extension. (Well, they still have some new problems, see below):
++ **Reason:** Because significant emulation cost may be incurred due to **frequent mapping operations in the guest**. Such cost could be **alleviated** through side-core emulation, or para-virtualized extension. (Well, they still have some new problems, see below):
 	+ Side-core emulation (security issues)
 		+ requires an additional CPU core to perform the emulation
 		+ can only achieve optimal performance with deferred IOTLB invalidation => compromised security.
@@ -209,9 +207,8 @@ It is not a reliable solution for fine-grained pinning, only used in limited cir
 
 Therefore, vIOMMU is only used when intra-guest protection is valued over the overhead of DMA remapping. (slow, but secure)
 
-#### What the authors say
-
-Mixing the requirements of protection and pinning, through the same costly DMA remapping interface, is needlessly constraining. 
+#### What the authors propose
+Mixing the requirements of protection (security) and pinning (performance) through the same costly DMA remapping interface, is needlessly constraining. 
 - Protection is a guest requirement.
 - Pinning is for host memory management. 
 The two do not always match, thus favoring one may easily break the other. Instead, they aim to provide a reliable solution for fine-grained pinning by decoupling it from protection.
@@ -219,6 +216,12 @@ The two do not always match, thus favoring one may easily break the other. Inste
 #### Here comes coIOMMU
 + A new vIOMMU architecture
 + Helps hypervisor achieve efficient memory management in direct I/O.
-+ A mechanism for cooperative DMA buffer tracking, orthogonal to (don't quite understand) the costly DMA remapping interface
++ A mechanism for cooperative DMA buffer tracking, orthogonal to the costly DMA remapping interface
 + Allows the hypervisor and guest to communicate over a DMA tracking table (DTT) located in a shared memory region.
-	+ 
+	+ Guest: records the mapping status of its DMA buffers in the DTT.
+	+ Hypervisor: walks the DTT to identify the corresponding pinning requirement.
++ Minimizes the number of notifications from the guest, with two optimizations:
+	+ smart pinning, which heuristically pins frequently used pages and timely shares its pinning status with the guest, to enable precise notification in guest-mapping operations.
+	+ lazy unpinning, which asynchronously unpins guest pages to eliminate notifications in guest-unmapping operations.
+
+In conclusion: the new mechanism does not affect the desired semantics of DMA remapping. It can be enabled with or without DMA remapping, as a reliable and standard **interface** to achieve fine-grained pinning in direct I/O.
