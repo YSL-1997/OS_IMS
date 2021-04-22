@@ -1,12 +1,3 @@
-## Questions:
-1. What is hypervisor? Virtual machine like VMWare? Why we need that virtual machine? Is that a hardware simulator? Can it simulate a hardware?
-2. Do I need to learn PCI?
-3. While reading the paper, I noticed tons of problems regarding to Direct I/O, and memory virtualization
-4. What's the difference between shadow paging and nested page tables?
-5. I noticed several DMA optimization on network device drivers, are we going to do that?
-6. How is IOMMU implemented?
-7. Are we going to implement/modify the IOMMU?
-8. Why are we going to look at the 3c59x.c the device driver for a network card?
 ## Useful links:
 + [Lecture of Virtual Machines by UCSD](http://www.cs.cmu.edu/~dga/15-440/F10/lectures/vm-ucsd.pdf)
 + [CSE 291 Virtualization @UCSD](https://cseweb.ucsd.edu/~yiying/cse291j-winter20/reading/)
