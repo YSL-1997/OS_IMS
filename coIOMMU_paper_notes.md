@@ -116,11 +116,18 @@ All Guest OSs can direct their I/O calls (by sending requests) to that VM (to th
 + and then the Device Domain will do the thing for the Guest OS.
 
 
-#### Single Root I/O Virtualization
+#### Direct I/O: Single Root I/O Virtualization (SR-IOV in network devices)
 Virtualize a single device to trick every VM into believing that it has exclusive access to its own device.
 
 Instead of creating multiple copies of the hardware of the host OS, it creates multiple virtual copies of I/O devices. It could then allocate such copies of I/O devices to different VMs, and those VMs believe that they have exclusive access to its own device.
 
+![](https://github.com/yslys/OS_IMS/blob/main/SR-IOV.png)
+
++ Problem: 
+	+ when guest device driver provides DMA buffers to VF, it can only provide guest physical address of the buffer
+	+ NIC cannot access the DMA buffer memory using guest physical address alone
++ Solution:
+	+ IOMMU - Guest PA -> Host PA.
 
 
 
