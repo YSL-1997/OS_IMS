@@ -6,7 +6,7 @@
 + [Virtualization and Memory Management on YouTube](https://www.youtube.com/watch?v=e6Zc4hcJjAY)
 + [I/O virtualization 1](https://www.youtube.com/watch?v=2yhcITe_xa0)
 + [I/O virtualization 2](https://www.youtube.com/watch?v=gwMrdCONERo)
-
++ [Intel® Virtualization Technology for Directed I/O (VT-d): Enhancing Intel platforms for efficient virtualization of I/O devices](https://software.intel.com/content/www/us/en/develop/articles/intel-virtualization-technology-for-directed-io-vt-d-enhancing-intel-platforms-for-efficient-virtualization-of-io-devices.html)
 ## Memory virtualization
 Several terms:
 
