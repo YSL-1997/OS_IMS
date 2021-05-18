@@ -1,5 +1,5 @@
 ## SiFive Freedom Unleashed SDK
-The GitHub repo that describes the steps is ![this](https://github.com/sifive/freedom-u-sdk).
+The GitHub repo that describes the steps is [this](https://github.com/sifive/freedom-u-sdk).
 
 Before we start, make sure to update and upgrade ```apt-get``` by:
 ```
@@ -11,7 +11,7 @@ $ sudo apt-get install curl
 ```
 
 ### Step 1: install repo
-The website can be found ![here](https://source.android.com/setup/develop#installing-repo).
+The website can be found [here](https://source.android.com/setup/develop#installing-repo).
 
 1. Ensure that you have a ```bin/``` directory in your home directory and that it's included in your path:
 ```
@@ -24,7 +24,7 @@ $ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
 $ chmod a+x ~/bin/repo
 ```
 
-3. To complete the full Repo Tool installation, need to ![initialize a repo client](https://source.android.com/setup/build/downloading#initializing-a-repo-client).
+3. To complete the full Repo Tool installation, need to [initialize a repo client](https://source.android.com/setup/build/downloading#initializing-a-repo-client).
 
 + Create an empty directory to hold your working files. Give it any name you like:
 ```
@@ -67,7 +67,7 @@ $ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential 
 
 Below are the useless/needless things I did while setting up the environment. Skip this and directly go to here.
 
-Next, we need to install dependency - Monotone, but before that, we need to install Boost, as Monotone requires that Boost is installed. Detailed description could be found ![here](https://wiki.gumstix.com/index.php/Bitbake_on_Ubuntu). 
+Next, we need to install dependency - Monotone, but before that, we need to install Boost, as Monotone requires that Boost is installed. Detailed description could be found [here](https://wiki.gumstix.com/index.php/Bitbake_on_Ubuntu). 
 
 Execute the following commands to install dependencies for Monotone:
 ```
@@ -83,7 +83,7 @@ Create a directory called slug, then cd into it.
 
 #### Boost
 
-Now, we could download Boost from ![here](https://www.boost.org/users/download/).
+Now, we could download Boost from [here](https://www.boost.org/users/download/).
 
 I used 1_76_0 version, and there is no ./configure file; instead, there is a shell script called bootstrap.sh - execute that script.
 
@@ -154,7 +154,7 @@ $ sudo apt-get update
 $ sudo apt-get install subversion
 ```
 
-After that, we could follow the instructions ![here](http://psyco.sourceforge.net/psycoguide/sources.html) to install Psyco.
+After that, we could follow the instructions [here](http://psyco.sourceforge.net/psycoguide/sources.html) to install Psyco.
 
 svn co https://codespeak.net/svn/psyco/dist psyco-dist
 
@@ -185,7 +185,7 @@ $ sudo apt install xsltproc
 $ python setup.py build
 $ python setup.py install
 ```
-5. When we type ```$ bitbake```, there might be an error: ```ImportError: No module named ply```. The ![solution](https://github.com/asl2/PyZ3950/issues/4#issuecomment-432916987-permalink) is:
+5. When we type ```$ bitbake```, there might be an error: ```ImportError: No module named ply```. The [solution](https://github.com/asl2/PyZ3950/issues/4#issuecomment-432916987-permalink) is:
 ```
 $ sudo apt-get install python-ply     # for python2.7.x
 ```
@@ -202,7 +202,7 @@ $ python --version    # to check the version of python
 ```
 
 7. Then, there might be another error: ```ModuleNotFoundError: No module named 'bb'```
-This means bitbake is installed/used in the wrong way, together with OE, according to ![this](https://stackoverflow.com/questions/36395831/importerror-no-module-named-bb)
+This means bitbake is installed/used in the wrong way, together with OE, according to [this](https://stackoverflow.com/questions/36395831/importerror-no-module-named-bb)
 
 
 ### The correct way:
@@ -219,7 +219,7 @@ Then, install repo in meta-sifive directory
 
 
 #### OpenEmbedded-Core Standalone Setup
-The steps are ![here](https://www.openembedded.org/wiki/OE-Core_Standalone_Setup), and ![here](https://stackoverflow.com/questions/36395831/importerror-no-module-named-bb).
+The steps are [here](https://www.openembedded.org/wiki/OE-Core_Standalone_Setup), and [here](https://stackoverflow.com/questions/36395831/importerror-no-module-named-bb).
 1. Clone the repositories for OE-Core (the core metadata) and BitBake (the build tool), checking out the latest stable branches of each one in turn:
 ```
 $ git clone git://git.openembedded.org/openembedded-core
@@ -227,7 +227,7 @@ $ cd openembedded-core
 $ git clone git://git.openembedded.org/bitbake bitbake
 ```
 
-2. Check out the latest stable branches of both ![OpenEmbedded-Core](https://wiki.yoctoproject.org/wiki/Releases) and ![BitBake](http://git.openembedded.org/bitbake/):
+2. Check out the latest stable branches of both ![OpenEmbedded-Core](https://wiki.yoctoproject.org/wiki/Releases) and [BitBake](http://git.openembedded.org/bitbake/):
 ```
 # inside openembedded-core directory
 $ git checkout master
@@ -263,7 +263,7 @@ $ mkdir riscv-yocto && cd riscv-yocto
 
 #### Install repo inside workspace
 
-The website can be found ![here](https://source.android.com/setup/develop#installing-repo).
+The website can be found [here](https://source.android.com/setup/develop#installing-repo).
 
 1. Ensure that you have a ```bin/``` directory in your home directory and that it's included in your path:
 ```
@@ -276,7 +276,7 @@ $ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
 $ chmod a+x ~/bin/repo
 ```
 
-3. To complete the full Repo Tool installation, need to ![initialize a repo client](https://source.android.com/setup/build/downloading#initializing-a-repo-client).
+3. To complete the full Repo Tool installation, need to [initialize a repo client](https://source.android.com/setup/build/downloading#initializing-a-repo-client).
 
 + Create an empty directory to hold your working files. Give it any name you like:
 ```
