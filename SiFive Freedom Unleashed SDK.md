@@ -1,4 +1,121 @@
-## SiFive Freedom Unleashed SDK
+## Current working way:
+https://github.com/riscv/meta-riscv
+
+Note: this is the only way that works well! Although the build image step would cost a long time...
+
+#### Install dependencies:
+```
+$ sudo apt-get update && sudo apt-get upgrade
+$ sudo apt-get install python3-distutils
+$ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm python3-subunit mesa-common-dev
+```
+
+#### Create a new workspace:
+```
+$ mkdir riscv-yocto && cd riscv-yocto
+```
+
+#### Install repo inside workspace
+
+The website can be found [here](https://source.android.com/setup/develop#installing-repo).
+
+1. Ensure that you have a ```bin/``` directory in your home directory and that it's included in your path:
+```
+$ mkdir ~/bin
+$ PATH=~/bin:$PATH
+```
+2. Download the Repo Launcher and ensure that it's executable:
+```
+$ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+$ chmod a+x ~/bin/repo
+```
+
+3. To complete the full Repo Tool installation, need to [initialize a repo client](https://source.android.com/setup/build/downloading#initializing-a-repo-client).
+
++ Create an empty directory to hold your working files. Give it any name you like:
+```
+$ mkdir WORKING_DIRECTORY
+$ cd WORKING_DIRECTORY
+```
++ Configure Git with your real name and email address:
+```
+$ git config --global user.name Your Name
+$ git config --global user.email you@example.com
+```
++ Run repo init to get the latest version of Repo with its most recent bug fixes. 
+```
+$ repo init -u https://android.googlesource.com/platform/manifest
+```
++ To check out the master branch:
+```
+$ repo init -u https://android.googlesource.com/platform/manifest -b master
+```
+
+A successful initialization ends with a message stating that Repo is initialized in your working directory. Your client directory now contains a .repo directory where files such as the manifest are kept.
+
+
+#### Create workspace:
+```
+$ mkdir riscv-yocto && cd riscv-yocto
+$ repo init -u git://github.com/riscv/meta-riscv  -b master -m tools/manifests/riscv-yocto.xml
+$ repo sync
+$ repo start work --all
+```
+
+#### Setup:
+```
+$ . ./riscv-yocto/meta-riscv/setup.sh
+```
+
+#### Build images:
+A console-only image for the 64-bit QEMU machine
+```
+$ MACHINE=qemuriscv64 bitbake core-image-full-cmdline
+```
+
+#### Run in QEMU:
+Run the 64-bit machine in QEMU using the following command:
+```
+$ MACHINE=qemuriscv64 runqemu nographic
+```
+
+Login: root
+Password: riscv
+
+#### Proxy problem
+There might be an error saying that: Fatal Error : Can't resolve host github.com.
+
+Possible Solution: Restart your network-manager using 
+```
+sudo service network-manager restart
+```
+
+
+## SiFive Freedom RISC-V Tools for Embedded Development
+Before start, make sure that your host machine has an SSH key. If not, follow [this](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) to generate a new SSH key, or you may not be able to execute the following commands.
+
+
+
+
+
+
+
+
+
+
+## Another Option: Freedom Studio
+Here are the links to how to use it:
++ https://www.youtube.com/watch?v=KBvAKHsHBW4
+
+
+
+
+
+
+
+
+
+## SiFive Freedom Unleashed SDK (Roundabout Courses)
 The GitHub repo that describes the steps is [this](https://github.com/sifive/freedom-u-sdk).
 
 Before we start, make sure to update and upgrade ```apt-get``` by:
@@ -63,7 +180,7 @@ $ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential 
 ```
 
 
-#### Roundabout Courses
+#### Other Roundabout Courses
 
 Below are the useless/needless things I did while setting up the environment. Skip this and directly go to here.
 
@@ -235,110 +352,6 @@ $ cd bitbake
 $ git checkout master
 ```
 Note: must checkout the master branch, or there would be failure!!! Don't ask me why I know this XD.
-
-## Another Option: Freedom Studio
-Here are the links to how to use it:
-+ https://www.youtube.com/watch?v=KBvAKHsHBW4
-
-
-
-
-
-## Current working way:
-https://github.com/riscv/meta-riscv
-
-Note: this is the only way that works well! Although the build image step would cost a long time...
-
-#### Install dependencies:
-```
-$ sudo apt-get update && sudo apt-get upgrade
-$ sudo apt-get install python3-distutils
-$ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm python3-subunit mesa-common-dev
-```
-
-#### Create a new workspace:
-```
-$ mkdir riscv-yocto && cd riscv-yocto
-```
-
-#### Install repo inside workspace
-
-The website can be found [here](https://source.android.com/setup/develop#installing-repo).
-
-1. Ensure that you have a ```bin/``` directory in your home directory and that it's included in your path:
-```
-$ mkdir ~/bin
-$ PATH=~/bin:$PATH
-```
-2. Download the Repo Launcher and ensure that it's executable:
-```
-$ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-$ chmod a+x ~/bin/repo
-```
-
-3. To complete the full Repo Tool installation, need to [initialize a repo client](https://source.android.com/setup/build/downloading#initializing-a-repo-client).
-
-+ Create an empty directory to hold your working files. Give it any name you like:
-```
-$ mkdir WORKING_DIRECTORY
-$ cd WORKING_DIRECTORY
-```
-+ Configure Git with your real name and email address:
-```
-$ git config --global user.name Your Name
-$ git config --global user.email you@example.com
-```
-+ Run repo init to get the latest version of Repo with its most recent bug fixes. 
-```
-$ repo init -u https://android.googlesource.com/platform/manifest
-```
-+ To check out the master branch:
-```
-$ repo init -u https://android.googlesource.com/platform/manifest -b master
-```
-
-A successful initialization ends with a message stating that Repo is initialized in your working directory. Your client directory now contains a .repo directory where files such as the manifest are kept.
-
-
-#### Create workspace:
-```
-$ mkdir riscv-yocto && cd riscv-yocto
-$ repo init -u git://github.com/riscv/meta-riscv  -b master -m tools/manifests/riscv-yocto.xml
-$ repo sync
-$ repo start work --all
-```
-
-#### Setup:
-```
-$ . ./riscv-yocto/meta-riscv/setup.sh
-```
-
-#### Build images:
-A console-only image for the 64-bit QEMU machine
-```
-$ MACHINE=qemuriscv64 bitbake core-image-full-cmdline
-```
-
-#### Run in QEMU:
-Run the 64-bit machine in QEMU using the following command:
-```
-$ MACHINE=qemuriscv64 runqemu nographic
-```
-
-Login: root
-Password: riscv
-
-#### Proxy problem
-There might be an error saying that: Fatal Error : Can't resolve host github.com.
-
-Possible Solution: Restart your network-manager using 
-```
-sudo service network-manager restart
-```
-
-
-## SiFive Freedom RISC-V Tools for Embedded Development
-Before start, make sure that your host machine has an SSH key. If not, follow [this](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) to generate a new SSH key, or you may not be able to execute the following commands.
 
 
 
