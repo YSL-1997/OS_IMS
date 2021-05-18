@@ -247,6 +247,8 @@ Here are the links to how to use it:
 ## Current working way:
 https://github.com/riscv/meta-riscv
 
+Note: this is the only way that works well! Although the build image step would cost a long time...
+
 #### Install dependencies:
 ```
 $ sudo apt-get update && sudo apt-get upgrade
