@@ -331,8 +331,14 @@ Password: riscv
 #### Proxy problem
 There might be an error saying that: Fatal Error : Can't resolve host github.com.
 
-Solution: Restart your network-manager using 
+Possible Solution: Restart your network-manager using 
 ```
 sudo service network-manager restart
 ```
+
+
+## SiFive Freedom RISC-V Tools for Embedded Development
+Before start, make sure that your host machine has an SSH key. If not, follow [this](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) to generate a new SSH key, or you may not be able to execute the following commands.
+
+
 
