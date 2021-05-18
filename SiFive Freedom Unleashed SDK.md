@@ -327,3 +327,12 @@ $ MACHINE=qemuriscv64 runqemu nographic
 
 Login: root
 Password: riscv
+
+#### Proxy problem
+There might be an error saying that: Fatal Error : Can't resolve host github.com.
+
+Solution: Restart your network-manager using 
+```
+sudo service network-manager restart
+```
+
