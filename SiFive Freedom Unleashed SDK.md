@@ -3,6 +3,8 @@ https://github.com/riscv/meta-riscv
 
 Note: this is the only way that works well! Although the build image step would cost a long time...
 
+Before start, make sure that your host machine has an SSH key. If not, follow [this](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) to generate a new SSH key, or you may not be able to execute the following commands.
+
 #### Install dependencies:
 ```
 $ sudo apt-get update && sudo apt-get upgrade
@@ -68,7 +70,7 @@ $ . ./riscv-yocto/meta-riscv/setup.sh
 ```
 
 #### Build images:
-A console-only image for the 64-bit QEMU machine
+A console-only image for the 64-bit QEMU machine:
 ```
 $ MACHINE=qemuriscv64 bitbake core-image-full-cmdline
 ```
@@ -91,16 +93,29 @@ sudo service network-manager restart
 ```
 
 
-## SiFive Freedom RISC-V Tools for Embedded Development
-Before start, make sure that your host machine has an SSH key. If not, follow [this](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) to generate a new SSH key, or you may not be able to execute the following commands.
+## SiFive Freedom Unleashed SDK
+The steps are similar to the above. For more details, please refer to https://github.com/sifive/freedom-u-sdk.
 
+```
+$ mkdir riscv-sifive && cd riscv-sifive
+# install repo inside this directory
+$ repo init -u git://github.com/sifive/meta-sifive -b 2021.04 -m tools/manifests/sifive.xml
+$ repo sync
+$ repo start work --all
 
+# Get build tools
+$ ./openembedded-core/scripts/install-buildtools -r yocto-3.2_M2 -t 20200729
+$ . ./openembedded-core/buildtools/environment-setup-x86_64-pokysdk-linux
 
+# Setup build environment
+$ . ./meta-sifive/setup.sh
 
+# Build disk image (basic command line image) running on qemuriscv64 (RISC-V 64-bit (RV64GC) for QEMU virt machine), with number of threads configured to 4
+$ PARALLEL_MAKE="-j 4" BB_NUMBER_THREADS=4 MACHINE=qemuriscv64 bitbake demo-coreip-cli
 
-
-
-
+# Running in QEMU
+$ MACHINE=qemuriscv64 runqemu nographic slirp
+```
 
 
 ## Another Option: Freedom Studio
@@ -112,10 +127,10 @@ Here are the links to how to use it:
 
 
 
+Below are the roundabout courses I took while setting up the environment. No need to read them, but if you are interested in installing *Boost* and *Monotone*.
 
 
-
-## SiFive Freedom Unleashed SDK (Roundabout Courses)
+## Roundabout Courses when building SiFive Freedom Unleashed SDK
 The GitHub repo that describes the steps is [this](https://github.com/sifive/freedom-u-sdk).
 
 Before we start, make sure to update and upgrade ```apt-get``` by:
@@ -182,7 +197,7 @@ $ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential 
 
 #### Other Roundabout Courses
 
-Below are the useless/needless things I did while setting up the environment. Skip this and directly go to here.
+Below are the useless/needless things I did while setting up the environment.
 
 Next, we need to install dependency - Monotone, but before that, we need to install Boost, as Monotone requires that Boost is installed. Detailed description could be found [here](https://wiki.gumstix.com/index.php/Bitbake_on_Ubuntu). 
 
@@ -321,8 +336,6 @@ $ python --version    # to check the version of python
 7. Then, there might be another error: ```ModuleNotFoundError: No module named 'bb'```
 This means bitbake is installed/used in the wrong way, together with OE, according to [this](https://stackoverflow.com/questions/36395831/importerror-no-module-named-bb)
 
-
-### The correct way:
 
 #### Download meta-sifive
 ```
