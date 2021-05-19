@@ -1,4 +1,4 @@
-## Current working way:
+## Setup for RISC-V Architecture Layer for OpenEmbedded/Yocto
 https://github.com/riscv/meta-riscv
 
 Note: this is the only way that works well! Although the build image step would cost a long time...
