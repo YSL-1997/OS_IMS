@@ -9,7 +9,7 @@ Before start, make sure that your host machine has an SSH key. If not, follow [t
 ```
 $ sudo apt-get update && sudo apt-get upgrade
 $ sudo apt-get install python3-distutils
-$ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm python3-subunit mesa-common-dev
+$ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm python3-subunit mesa-common-dev
 ```
 
 #### Create a new workspace:
