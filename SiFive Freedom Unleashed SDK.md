@@ -123,7 +123,13 @@ Here are the links to how to use it:
 + https://www.youtube.com/watch?v=KBvAKHsHBW4
 
 
-
+## After setting up GPG key
+```
+git config --global user.signingkey <YOUR_SIGNING_KEY>
+git config --global commit.gpgsign true
+git config --global gpg.program gpg
+```
+Credit to https://stackoverflow.com/questions/39494631/gpg-failed-to-sign-the-data-fatal-failed-to-write-commit-object-git-2-10-0#47087248
 
 
 
@@ -193,14 +199,6 @@ Essentials: Packages needed to build an image on a headless system:
 ```
 $ sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm python3-subunit mesa-common-dev
 ```
-
-## After setting up GPG key
-```
-git config --global user.signingkey <YOUR_SIGNING_KEY>
-git config --global commit.gpgsign true
-git config --global gpg.program gpg
-```
-Credit to https://stackoverflow.com/questions/39494631/gpg-failed-to-sign-the-data-fatal-failed-to-write-commit-object-git-2-10-0#47087248
 
 
 #### Other Roundabout Courses
