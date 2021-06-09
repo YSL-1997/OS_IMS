@@ -114,7 +114,7 @@ $ . ./meta-sifive/setup.sh
 $ PARALLEL_MAKE="-j 4" BB_NUMBER_THREADS=4 MACHINE=qemuriscv64 bitbake demo-coreip-cli
 
 # Running in QEMU
-$ MACHINE=qemuriscv64 runqemu nographic slirp
+$ MACHINE=qemuriscv64 runqemu qemuparams="-m 2048" nographic slirp
 ```
 
 
