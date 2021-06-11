@@ -115,6 +115,9 @@ $ PARALLEL_MAKE="-j 4" BB_NUMBER_THREADS=4 MACHINE=qemuriscv64 bitbake demo-core
 
 # Running in QEMU
 $ MACHINE=qemuriscv64 runqemu qemuparams="-m 2048" nographic slirp
+
+# Set date and time in emulated sifive
+$ date -s "11 JUN 2021 11:14:00"
 ```
 
 
