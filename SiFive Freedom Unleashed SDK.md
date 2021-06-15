@@ -118,6 +118,8 @@ $ MACHINE=qemuriscv64 runqemu qemuparams="-m 2048" nographic slirp
 
 # Set date and time in emulated sifive
 $ date -s "12 JUN 2021 00:45:00"
+
+$ sudo echo nameserver 8.8.8.8 > /etc/resolv.conf
 ```
 
 
