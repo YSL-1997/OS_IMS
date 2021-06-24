@@ -8,4 +8,6 @@
 
 [Linux virtualization and PCI passthrough](https://developer.ibm.com/tutorials/l-pci-passthrough/)
 
+[Dive into the KVM hypervisor](https://developer.ibm.com/articles/cl-hypervisorcompare-kvm/?mhsrc=ibmsearch_a&mhq=virtio)
+
 [The Video4Linux2 API](https://lwn.net/Articles/203924/)
