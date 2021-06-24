@@ -4,4 +4,6 @@
 
 [Virtio: An I/O virtualization framework for Linux](https://developer.ibm.com/technologies/linux/articles/l-virtio/)
 
+[Paper: virtio: Towards a De-Facto Standard For Virtual I/O Devices](https://www.ozlabs.org/~rusty/virtio-spec/virtio-paper.pdf)
+
 [The Video4Linux2 API](https://lwn.net/Articles/203924/)
