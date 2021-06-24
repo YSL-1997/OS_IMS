@@ -6,4 +6,6 @@
 
 [Paper: virtio: Towards a De-Facto Standard For Virtual I/O Devices](https://www.ozlabs.org/~rusty/virtio-spec/virtio-paper.pdf)
 
+[Linux virtualization and PCI passthrough](https://developer.ibm.com/tutorials/l-pci-passthrough/)
+
 [The Video4Linux2 API](https://lwn.net/Articles/203924/)
