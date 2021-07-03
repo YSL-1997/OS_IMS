@@ -122,6 +122,8 @@ $ date -s "22 JUN 2021 10:53:00"
 $ sudo echo nameserver 8.8.8.8 > /etc/resolv.conf
 ```
 
+## Things to do before developing kernel modules
+You need to run ```$ make scripts prepare``` in /usr/src/kernel before trying to compile kernel modules on target.([Link](https://www.mail-archive.com/yocto@lists.yoctoproject.org/msg04052.html))
 
 ## Another Option: Freedom Studio
 Here are the links to how to use it:
