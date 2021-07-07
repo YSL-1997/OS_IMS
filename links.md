@@ -16,11 +16,17 @@
 ## Details
 ////////////////////////////////////////////////////////////////////////////////
 // it is this host device that actually uses the queue to be a network card.
+
 // When the user wants to send a packet, it will first call send() syscall,
+
 // the send() syscall traps to the kernel, the kernel calls through the TCP/IP
+
 // stack (multiple layers), and then TCP/IP stack will call into the sn_netdev.c
+
 // to send a packet, and sn_netdev.c will call into sn_host.c to enqueue the packet
+
 // in the ring. Hence, it is the kernel that invokes this code on behalf of the
+
 // user mode syscall.
 
 
