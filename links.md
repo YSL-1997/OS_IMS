@@ -60,3 +60,5 @@ After the second colon, you specify where to copy things, i.e. take what is in a
 Example: ```asm volatile("rdtsc" : "=a" (c), "=d" (d));```
 
 We are going to execute ```rdtsc``` instruction, and as output, we want to take what is in %eax and copy it to variable c, and copy what is in %edx to variable d.
+
+**Q: Implementation of shared queue?**
