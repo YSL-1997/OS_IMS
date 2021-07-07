@@ -34,3 +34,9 @@ needs are easily met with software.
 features without worrying about cases where they are unavailable or incomplete.
     2. A scheduling framework - supports a wide range of operator-specified performance isolation policies, and provide fine-grained performance guarantees for applications.
     3. Several use cases of SoftNIC - showing how SoftNIC can improve the flexibility and/or performance of both existing and forward-looking applications.
+
+### 3 SoftNIC design
+SoftNIC is a programmable platform that allows applications to leverage software and hardware implementations of NIC features. SoftNIC is implemented as a shim layer between applications and NIC hardware, to achieve the best of both the flexibility of software and the performance of hardware.
+
+### 3.1 Design Goals
+
