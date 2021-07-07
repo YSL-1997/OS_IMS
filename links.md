@@ -37,3 +37,25 @@ A: When you enqueue a cmd, typically what you're enqueuing is a descriptor. When
 So SVA in the ENQCMD says "we are going to enqueue a virtual address, and we are also going to enqueue an identifier indicating that which address space this virtual address comes from, and which process it belongs to - this allows the device to lookup in the page table to translate the actual physical address." So the device can use an IOMMU to properly translate that virtual address, get the physical address and retrieve the actual data. 
 
 By using DVM, device dequeuing virtual address can skip the address translation.
+
+**Q: What is the use of ```asm volatile("" ::: "memory")``?**
+
+A: It is the compiler barrier. When you implement a shared data structure, you care a lot about the order in which you updating memory. Suppose you have some data that you want to add to the ring buffer, and the tail pointer of where the data is - you want to make sure that you update the data first, then update the tail pointer. The problem is that, the compiler in C are likely to reorder the operations if they think nobody is looking. Compiler in C knows nothing about multi-threaded code, so it may assume that it is the only thread accessing the data, and for optimizations, it may reorder operations. Hence, what the compiler barrier does is that "after executing compiler barrier, you cannot trust anything in memory, since it may have changed; meaning that if you dependent on anything in memory, you have to reload it afterwards." In other words, it makes sure that anything that happened (actually reaches memory) before the compiler barrier - after the compiler barrier, the compiler barrier makes sure that anything happens (reaches memory) needs refetching from memory since it may have changed. 
+
+For instance, if you cached a variable in the register, you need to refetch it from memory because its value of that variable might have changed.
+
+In short, compiler barrier says "everything might have changed, we cannot assume anything about what is in memory. It is needed to sort of make sure that the order of the operations are ordered properly."
+
+**Q: What is the grammar of ```asm```?**
+
+A: ```asm``` says what comes in the parenthesis is going to be **assembly code**. 
+
+The first set of quotes("") contains the assembly code itself - you give it a sequence of assembly instructions, and C compiler passes them to the assembler. 
+
+If you want to take any C variables and put them into register (e.g. %rax comes from local_var1, %rbx comes from local_var2, etc.), then you can pass them in after the first colon (:); which is to make sure that before executing the assembly code, the variables are in these registers.
+
+After the second colon, you specify where to copy things, i.e. take what is in a register and put it into some variables.
+
+Example: ```asm volatile("rdtsc" : "=a" (c), "=d" (d));```
+
+We are going to execute ```rdtsc``` instruction, and as output, we want to take what is in %eax and copy it to variable c, and copy what is in %edx to variable d.
