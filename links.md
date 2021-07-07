@@ -33,3 +33,7 @@
 **Q: What is the relationship between SVA, shared queue, and ENQCMD?**
 
 A: When you enqueue a cmd, typically what you're enqueuing is a descriptor. When you want to send data to the device, you do not send the data directly; instead, you enqueue a descriptor that has a pointer to the data you want to send, as well as the length field indicating how big the data is (and maybe some metadata). So, what you are enqueuing is the descriptor that says "hey, here's the data I want you (the device) to operate on". The challenge is that the descriptor has a pointer in it - if you did not have this enqueue command, but only have normal memory operations (store, move, etc.), then when you enqueue an address, user mode is actually enqueuing a user space virtual address. This leads to the fact that when the device does the dequeue, all it could get is the user space virtual address. Since the device will treat the virtual address as the physical address, it will not work because it is the wrong address.
+
+So SVA in the ENQCMD says "we are going to enqueue a virtual address, and we are also going to enqueue an identifier indicating that which address space this virtual address comes from, and which process it belongs to - this allows the device to lookup in the page table to translate the actual physical address." So the device can use an IOMMU to properly translate that virtual address, get the physical address and retrieve the actual data. 
+
+By using DVM, device dequeuing virtual address can skip the address translation.
