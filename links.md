@@ -62,11 +62,13 @@ Example: ```asm volatile("rdtsc" : "=a" (c), "=d" (d));```
 We are going to execute ```rdtsc``` instruction, and as output, we want to take what is in %eax and copy it to variable c, and copy what is in %edx to variable d.
 
 **Q: Implementation of shared queue?**
+
 A: (For instance, 3c59x driver), calls kmalloc to allocate some memory, then calls ```dma_map``` to map the physical memory to make it available to the device, and then take the address ```dma_map``` returns (the bus address that the device can use), and send it to the device using memory-mapped I/O. Then the device could use dma to read or write from the queue directly. So that way the user code could enqueue and dequeue, and the device could read from the queue.
 
 In real hardware, the hardware will have some circuitry or code embedded in the hardware that would implement a queue. For instance, the NIC chip has logic on the chip that knows how to implement the queue and knows how to read from the queue - the device logic defines the queue data structure that is accessed by the driver and accessed by the device. After implementing the queue in the driver in user mode, we are going to modify qemu to implement an accelerator device that implements the device there.
 
 **Q: How to let device know that user has enqueued?**
+
 A: The way most people do it is to implement door bell - another reigon of shared memory that the user mode code writes to, indicating that user has just enqueued something. It is just like a kind of notification that the device notices "when it has been written, I should go read from the queue". Typically that would be a memory mapped I/O register, when user writes to it, the device will get a signal saying that "go read from the queue".
 
 When we implement the driver, there are two ways of doing it.
@@ -76,6 +78,7 @@ One way is we can have some memory and we will have a poll or loop in the driver
 Alternatively we can use ioctl to implement a door bell, and then make a syscall to the driver to say that the queue was modified. ioctl is more expensive, but it is more CPU efficient in the driver.
 
 **Q: Polling and Interrupt? ([link](https://embetronicx.com/tutorials/linux/device-drivers/interrupts-in-linux-kernel/))**
+
 A: In polling (**from CPU side**), CPU keeps checking all hardwares of the availability of any request. The controller keeps monitoring the flags or signals one by one for all devices and provides service to whichever component that needs its service.
 
 In interrupt (**from hardware side**), the CPU will take care of the hardware only when the hardware requests for some service. When the flags or signals are received, they notify the controller that they need to be serviced.
