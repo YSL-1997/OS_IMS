@@ -74,3 +74,9 @@ When we implement the driver, there are two ways of doing it.
 One way is we can have some memory and we will have a poll or loop in the driver that wakes up periodically (use a timer) to check this memory location to see if a door bell has been written to. 
 
 Alternatively we can use ioctl to implement a door bell, and then make a syscall to the driver to say that the queue was modified. ioctl is more expensive, but it is more CPU efficient in the driver.
+
+**Q: Polling and Interrupt? ([link](https://embetronicx.com/tutorials/linux/device-drivers/interrupts-in-linux-kernel/))**
+A: In polling (**from CPU side**), CPU keeps checking all hardwares of the availability of any request. The controller keeps monitoring the flags or signals one by one for all devices and provides service to whichever component that needs its service.
+
+In interrupt (**from hardware side**), the CPU will take care of the hardware only when the hardware requests for some service. When the flags or signals are received, they notify the controller that they need to be serviced.
+
