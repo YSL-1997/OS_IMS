@@ -84,3 +84,16 @@ A: In polling (**from CPU side**), CPU keeps checking all hardwares of the avail
 In interrupt (**from hardware side**), the CPU will take care of the hardware only when the hardware requests for some service. When the flags or signals are received, they notify the controller that they need to be serviced.
 
 An interrupt is produced by electronic signals (from hardware devices) and directed into input pins on an interrupt controller (a simple chip that multiplexes multiple interrupt lines into a single line to the processor). These are the process that will be done by the kernel.
+
+**Q: Arrays**
+// if "int *array" points to a statically allocated space, then 
+
+// array == &array[0],
+
+// in order to retrieve values of array[0], array[1], ...
+
+// need *(array + i) where i is an integer
+
+// (array + i) stores the addresses of each element
+
+// array stores the base address of array
