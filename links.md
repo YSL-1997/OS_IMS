@@ -86,6 +86,7 @@ In interrupt (**from hardware side**), the CPU will take care of the hardware on
 An interrupt is produced by electronic signals (from hardware devices) and directed into input pins on an interrupt controller (a simple chip that multiplexes multiple interrupt lines into a single line to the processor). These are the process that will be done by the kernel.
 
 **Q: Arrays**
+
 // if "int *array" points to a statically allocated space, then 
 
 // array == &array[0],
@@ -111,7 +112,7 @@ int main(){
     printf("(x) value of x: x itself is a pointer pointing to the starting address of array x: %ld\n", x); 
     printf("(*&x) value of *&x, equal to the value of x (the above): %ld\n", *&x); // this should be equal to x
     printf("(&x) address of x: %ld\n", &x); // this should be equal to &x[0]
-    
+    printf("(&x[0]) address of x[0], address of the starting of array x, should be equal to the above: %ld\n", &x[0]);
     printf("&x == *&x? the answer is: %d. Why???\n", &x == *&x); // why these two are equal???
     
     
@@ -141,7 +142,7 @@ int main(){
     printf("(x) value of x: x itself is a pointer pointing to the starting address of array x: %ld\n", x); 
     printf("(*&x) value of *&x, equal to the value of x (the above): %ld\n", *&x); // this should be equal to x
     printf("(&x) address of x: %ld\n", &x); // this should be equal to &x[0]
-    
+    printf("(&x[0]) address of x[0], address of the starting of array x, should be equal to the above: %ld\n", &x[0]);
     printf("&x == *&x? the answer is: %d. Why???\n", &x == *&x); // why these two are equal???
     
     
