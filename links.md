@@ -98,4 +98,4 @@ An interrupt is produced by electronic signals (from hardware devices) and direc
 
 // array stores the base address of array
 
-// ```*(&array)``` is equal to ```&array[0]``` and ```array```
+// ```*&array``` is equal to ```&array[0]``` and ```array```
