@@ -99,3 +99,66 @@ An interrupt is produced by electronic signals (from hardware devices) and direc
 // array stores the base address of array
 
 // ```*&array``` is equal to ```&array[0]``` and ```array```
+
+-------------------------------------
+
+```
+int main(){
+    int x[10];
+    x[0] = malloc(sizeof(int) * 11); // x[0] = malloc(sizeof(int) * 11), equivalent
+    
+    // the following should print the starting address of array x, i.e. address of x[0]
+    printf("(x) value of x: x itself is a pointer pointing to the starting address of array x: %ld\n", x); 
+    printf("(*&x) value of *&x, equal to the value of x (the above): %ld\n", *&x); // this should be equal to x
+    printf("(&x) address of x: %ld\n", &x); // this should be equal to &x[0]
+    
+    printf("&x == *&x? the answer is: %d. Why???\n", &x == *&x); // why these two are equal???
+    
+    
+    // the following three values should be random
+    printf("\nthe following three values should be random\n");
+    printf("(x[0] == *x) value of x[0] should be equal to *x: %d == %d\n", x[0], *x);
+    printf("(x[1] == *(x+1)) value of x[1] should be equal to *(x+1): %d == %d\n", x[1], *(x+1));
+    printf("(x[2] == *(x+2)) value of x[2] should be equal to *(x+2): %d == %x\n", x[2], *(x+2));
+    
+    
+    
+    // the following three addresses should be consecutive
+    printf("\nthe following three addresses should be consecutive\n");
+    printf("(&x[0]) address of x[0]: %ld\n", &x[0]);
+    printf("(&x[1]) address of x[1]: %ld\n", &x[1]);
+    printf("(&x[2]) address of x[1]: %ld\n", &x[2]);
+    
+    // now, we initialize the values in the array
+    printf("\nnow, we initialize the values in the array\n");
+    for(int i = 0; i < 10; i++){
+        *(x+i) = i; // x[i] = i, equivalent
+    }
+    
+    printf("\n--------after initializing the values-------------\n");
+    
+    // the following should print the starting address of array x, i.e. address of x[0]
+    printf("(x) value of x: x itself is a pointer pointing to the starting address of array x: %ld\n", x); 
+    printf("(*&x) value of *&x, equal to the value of x (the above): %ld\n", *&x); // this should be equal to x
+    printf("(&x) address of x: %ld\n", &x); // this should be equal to &x[0]
+    
+    printf("&x == *&x? the answer is: %d. Why???\n", &x == *&x); // why these two are equal???
+    
+    
+    // the following three values should be random
+    printf("\nthe following three values should be random\n");
+    printf("(x[0] == *x) value of x[0] should be equal to *x: %d == %d\n", x[0], *x);
+    printf("(x[1] == *(x+1)) value of x[1] should be equal to *(x+1): %d == %d\n", x[1], *(x+1));
+    printf("(x[2] == *(x+2)) value of x[2] should be equal to *(x+2): %d == %x\n", x[2], *(x+2));
+    
+    
+    
+    // the following three addresses should be consecutive
+    printf("\nthe following three addresses should be consecutive\n");
+    printf("(&x[0]) address of x[0]: %ld\n", &x[0]);
+    printf("(&x[1]) address of x[1]: %ld\n", &x[1]);
+    printf("(&x[2]) address of x[1]: %ld\n", &x[2]);
+    
+    return 0;
+}
+```
