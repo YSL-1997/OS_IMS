@@ -106,7 +106,7 @@ An interrupt is produced by electronic signals (from hardware devices) and direc
 ```
 int main(){
     int x[10];
-    x[0] = malloc(sizeof(int) * 11); // x[0] = malloc(sizeof(int) * 11), equivalent
+    *x = malloc(sizeof(int) * 11); // x[0] = malloc(sizeof(int) * 11), equivalent
     
     // the following should print the starting address of array x, i.e. address of x[0]
     printf("(x) value of x: x itself is a pointer pointing to the starting address of array x: %ld\n", x); 
