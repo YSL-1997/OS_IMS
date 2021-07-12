@@ -11,7 +11,7 @@
   + ```kmalloc()``` 
   + linear, direct physical mapping (logical addr and associated physical addr differ by a constant offset)
   + stored in variables of type ```unsigned long``` or ```void *```
-  + all kernel logical addr are kernel virtual addr
+  + all kernel logical addr are kernel virtual addr (KLA < KVA)
 + kernel virtual addr (a mapping from a kernel-space address to a physical address) 
   + ```vmalloc()``` and ```kmap()```
   + stored in pointer variables
@@ -42,6 +42,90 @@ What's the difference between kernel virt addr and kernel logical addr?
 
 On 32-bit systems, kernel can address 4 GB of memory. Typically, kernel splits such 4GB of memory into 3 GB (user space) and 1 GB (kernel space). 
 However, the biggest consumer of kernel address space is **virtual mappings for physical memory**.
-The kernel cannot directly manipulate memory which is not mapped into the kernel's address space; hence, it needs its own virtual addr for any memory it must touch directly.
+The kernel cannot directly manipulate memory which is not mapped into the kernel's address space; hence, it needs its own **virtual addr for any memory it must touch directly**.
 Before accessing a high-memory page, the kernel must set up an explicit virtual mapping to make that page available in the kernel’s address space. 
 Thus, many kernel data structures must be placed in low memory; high memory tends to be reserved for user-space process pages.
+
+### Memory Map and struct page
+
+Historically, kernel mapped logical addr to physical addr. However, logical addr is not available for high memory; hence, BIG problem.
+
+Therefore, kernel functions dealing with memory are using pointers to ```struct page (linux/mm.h)``` instead.
+
+What is ```struct page```? This data structure keeps track of almost everything kernel needs to know about physical memory.
+
+```
+#include <linux/mm.h>
+
+// some fields in struct page:
+struct page {
+    atomic_t count; // # of references to this page. 
+                    // When the count drops to 0, the page is returned to the free list.
+
+    void *virtual; // kernel virtual address of the page, if it is mapped; NULL, otherwise. 
+                   // Lowmemory pages are always mapped; high-memory pages usually are not. 
+                   // This field does not appear on all architectures; 
+                   // it generally is compiled only where the kernel virtual address of a page 
+                   // cannot be easily calculated. If you want to look at this field, the proper 
+                   // method is to use the page_address macro.
+    
+    unsigned long flags; // A set of bit flags describing the status of the page. 
+                         // e.g. PG_locked: the page has been locked in memory.
+                         // e.g. PG_reserved: prevents the memory management system 
+                         //                   from working with the page at all.
+```
+
+The kernel maintains one or more arrays of struct page entries that track all of the physical memory on the system. e.g. a single array ```mem_map```.
+
+Some functions and macros for translating between struct page poiters and virtual addresses:
+```
+// This macro, defined in <asm/page.h>, takes a kernel logical address and returns
+// its associated struct page pointer. Since it requires a logical address, it does not
+// work with memory from vmalloc or high memory.
+struct page *virt_to_page(void *kaddr);
+
+// Returns the struct page pointer for the given page frame number. If necessary,
+// it checks a page frame number for validity with pfn_valid before passing it to
+// pfn_to_page.
+struct page *pfn_to_page(int pfn);
+
+// Returns the kernel virtual address of this page, if such an address exists. For high
+// memory, that address exists only if the page has been mapped. This function is
+// defined in <linux/mm.h>. In most situations, you want to use a version of kmap
+// rather than page_address
+void *page_address(struct page *page);
+
+
+#include <linux/highmem.h>
+void *kmap(struct page *page);
+void kunmap(struct page *page);
+// kmap returns a kernel virtual address for any page in the system. 
+// For low-memory pages, it just returns the logical address of the page; 
+// for high-memory pages, kmap creates a special mapping in a dedicated part of the kernel address space.
+// Mappings created with kmap should always be freed with kunmap; a limited
+// number of such mappings is available, so it is better not to hold on to them for
+// too long. kmap calls maintain a counter, so if two or more functions both call
+// kmap on the same page, the right thing happens. Note also that kmap can sleep
+// if no mappings are available.
+
+
+#include <linux/highmem.h>
+#include <asm/kmap_types.h>
+void *kmap_atomic(struct page *page, enum km_type type);
+void kunmap_atomic(void *addr, enum km_type type);
+// kmap_atomic is a high-performance form of kmap. Each architecture maintains a
+// small list of slots (dedicated page table entries) for atomic kmaps; a caller of
+// kmap_atomic must tell the system which of those slots to use in the type argument. 
+// The only slots that make sense for drivers are KM_USER0 and KM_USER1 (for
+// code running directly from a call from user space), and KM_IRQ0 and KM_IRQ1 (for
+// interrupt handlers). Note that atomic kmaps must be handled atomically; your
+// code cannot sleep while holding one. Note also that nothing in the kernel keeps
+// two functions from trying to use the same slot and interfering with each other
+// (although there is a unique set of slots for each CPU). In practice, contention for
+// atomic kmap slots seems to not be a problem.
+```
+
+### Page tables
+The processor's mechanism for translating virtual addr to physical addr.
+
+### Virtual Memory Areas
