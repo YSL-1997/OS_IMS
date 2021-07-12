@@ -138,7 +138,7 @@ The processor's mechanism for translating virtual addr to physical addr.
 + What does VMA consist of?
   + 1 area for **text** (program's executable code)
   + multiple areas for **data** (initialized data, uninitialized data (BSS - block started by symbol), program stack)
-  + 1 area for each active memory mapping
+  + 1 area for **each active memory mapping**
 + How to see the memory areas of a process?
   + By looking in /proc/<pid/maps>. /proc/self refers to the current process
   + The fields in each line are: *start-end perm offset major:minor inode image*
