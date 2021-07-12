@@ -129,3 +129,18 @@ void kunmap_atomic(void *addr, enum km_type type);
 The processor's mechanism for translating virtual addr to physical addr.
 
 ### Virtual Memory Areas
++ What is VMA? 
+  + The kernel data structure used to manage distinct regions of a process's address space.
++ What VMA represents?
+  + A homogeneous region in virtual memory of a process
+  + A contiguous range of virtual addresses that have the same permission flags, and are backed up by the same object (file, or swap space)
+  + A memory object with its own properties.
++ What does VMA consist of?
+  + 1 area for **text** (program's executable code)
+  + >1 areas for **data** (initialized data, uninitialized data (BSS - block started by symbol), program stack)
+  + 1 area for each active memory mapping
++ How to see the memory areas of a process?
+  + By looking in /proc/<pid/maps>. /proc/self refers to the current process
+  + The fields in each line are: *start-end perm offset major:minor inode image*
+
+The fields on the line above are the fields in ```struct vm_area_struct```.
