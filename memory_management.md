@@ -144,3 +144,10 @@ The processor's mechanism for translating virtual addr to physical addr.
   + The fields in each line are: *start-end perm offset major:minor inode image*
 
 The fields on the line above are the fields in ```struct vm_area_struct```.
+
+### mmap
+Mapping a device means associating a range of user-space addresses to device memory. Whenever the program reads or writes in the assigned address range, it is actually accessing the device. 
+The kernel can manage virtual addresses only at the level of page tables; therefore, the mapped area must be a multiple of ```PAGE_SIZE``` and must live in physical memory starting at an address that is a multiple of PAGE_SIZE. 
+
+To implement mmap, the driver only has to build suitable page tables for the address range and, if necessary, replace ```vma->vm_ops``` with a new set of operations.
+
