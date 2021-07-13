@@ -117,7 +117,7 @@ $ PARALLEL_MAKE="-j 4" BB_NUMBER_THREADS=4 MACHINE=qemuriscv64 bitbake demo-core
 $ MACHINE=qemuriscv64 runqemu qemuparams="-m 2048" nographic slirp
 
 # Set date and time in emulated sifive
-$ date -s "11 JUL 2021 22:30:00"
+$ date -s "12 JUL 2021 23:50:00"
 
 $ sudo echo nameserver 8.8.8.8 > /etc/resolv.conf
 ```
