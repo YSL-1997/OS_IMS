@@ -151,3 +151,31 @@ The kernel can manage virtual addresses only at the level of page tables; theref
 
 To implement mmap, the driver only has to build suitable page tables for the address range and, if necessary, replace ```vma->vm_ops``` with a new set of operations.
 
+The job of building new page tables to map a range of physical addresses is handled by ```remap_pfn_range``` and ```io_remap_page_range```.
+- ```remap_pfn_range``` is intended for situations where pfn refers to actual system RAM
+- ```io_remap_page_range``` should be used when ```phys_addr``` points to I/O memory.
+
+Prototypes of both functions:
+```
+/**
+ * @param vma: The virtual memory area into which the page range is being mapped.
+ * @param virt_addr: The user virtual address where remapping should begin. 
+ *                   The function builds page tables for the virtual address range 
+ *                   between virt_addr and virt_addr+size.
+ * @param pfn: The page frame number corresponding to the physical address to which the virtual address should be mapped. 
+ *             PFN is simply the physical address right-shifted by PAGE_SHIFT bits. 
+ *             For most uses, the vm_pgoff field of the VMA structure contains exactly the value you need. 
+ *             The function affects physical addresses from (pfn<<PAGE_SHIFT) to (pfn<<PAGE_SHIFT)+size.
+ * @param size: The dimension, in bytes, of the area being remapped.
+ * @param prot: The “protection” requested for the new VMA. The driver can (and should) use
+ *              the value found in vma->vm_page_prot.
+ *
+ * @return: 0 on success, negative error code on error.
+ */
+int remap_pfn_range(struct vm_area_struct *vma,
+                    unsigned long virt_addr, unsigned long pfn,
+                    unsigned long size, pgprot_t prot);
+int io_remap_page_range(struct vm_area_struct *vma,
+                    unsigned long virt_addr, unsigned long phys_addr,
+                    unsigned long size, pgprot_t prot);
+```
